@@ -42,6 +42,11 @@ function setupSocketAPI(http) {
             logger.info(`Removing socket.userId for socket [id: ${socket.id}]`)
             delete socket.userId
         })
+        socket.on('on-UserDrag', (boards) => {
+            console.log('boards', boards)
+
+            socket.broadcast.emit('on-dragRecived', boards)
+        })
 
     })
 }
