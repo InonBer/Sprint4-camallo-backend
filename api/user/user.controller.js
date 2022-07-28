@@ -12,6 +12,23 @@ async function getUser(req, res) {
     }
 }
 
+async function signUp(req, res) {
+    const { fullname, email, password } = req.body
+    const userToAdd = {
+        fullname,
+        email,
+        password
+    }
+    try {
+        const user = userService.add(userToAdd)
+        res.send(user)
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
 async function getUsers(req, res) {
     try {
         const filterBy = {
@@ -51,5 +68,6 @@ module.exports = {
     getUser,
     getUsers,
     deleteUser,
-    updateUser
+    updateUser,
+    signUp
 }

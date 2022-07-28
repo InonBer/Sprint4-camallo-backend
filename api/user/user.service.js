@@ -50,13 +50,13 @@ async function getById(userId) {
         throw err
     }
 }
-async function getByUsername(username) {
+async function getByUsername(fullname) {
     try {
         const collection = await dbService.getCollection('user')
-        const user = await collection.findOne({ username })
+        const user = await collection.findOne({ fullname })
         return user
     } catch (err) {
-        logger.error(`while finding user by username: ${username}`, err)
+        logger.error(`while finding user by fullname: ${fullname}`, err)
         throw err
     }
 }
@@ -92,11 +92,9 @@ async function add(user) {
     try {
         // peek only updatable fields!
         const userToAdd = {
-            username: user.username,
+            email: user.email,
             password: user.password,
             fullname: user.fullname,
-            imgUrl: user.imgUrl,
-            score: 100
         }
         const collection = await dbService.getCollection('user')
         await collection.insertOne(userToAdd)
