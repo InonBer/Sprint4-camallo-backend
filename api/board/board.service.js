@@ -29,12 +29,12 @@ async function update(board) {
 }
 async function remove(boardId) {
     try {
-        const store = asyncLocalStorage.getStore()
-        const { loggedinUser } = store
+        // const store = asyncLocalStorage.getStore()
+        // const { loggedinUser } = store
         const collection = await dbService.getCollection('board')
         // remove only if user is owner/admin
         const criteria = { _id: ObjectId(boardId) }
-        if (!loggedinUser.isAdmin) criteria.byUserId = ObjectId(loggedinUser._id)
+        // if (!loggedinUser.isAdmin) criteria.byUserId = ObjectId(loggedinUser._id)
         const { deletedCount } = await collection.deleteOne(criteria)
         return deletedCount
     } catch (err) {
