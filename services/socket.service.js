@@ -21,6 +21,7 @@ function setupSocketAPI(http) {
             }
             socket.join(topic)
             socket.myTopic = topic
+            console.log('socket.myTopic', socket.myTopic);
         })
         socket.on('chat-send-msg', msg => {
             logger.info(`New chat msg from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`)
@@ -35,6 +36,8 @@ function setupSocketAPI(http) {
 
         })
         socket.on('on-user-mouse-down', pos => {
+            console.log('pos', pos)
+
             socket.broadcast.to(socket.myTopic).emit('recive-user-click', pos)
         })
         socket.on('on-user-mouse-move', pos => {
@@ -57,8 +60,6 @@ function setupSocketAPI(http) {
             delete socket.userId
         })
         socket.on('on-UserDrag', (boards) => {
-            console.log('boards', boards)
-
             socket.broadcast.emit('on-dragRecived', boards)
         })
 
