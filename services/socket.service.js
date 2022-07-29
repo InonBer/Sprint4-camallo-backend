@@ -13,7 +13,7 @@ function setupSocketAPI(http) {
         socket.on('disconnect', socket => {
             logger.info(`Socket disconnected [id: ${socket.id}]`)
         })
-        socket.on('chat-set-topic', topic => {
+        socket.on('board-set-channel', topic => {
             if (socket.myTopic === topic) return
             if (socket.myTopic) {
                 socket.leave(socket.myTopic)
@@ -33,6 +33,20 @@ function setupSocketAPI(http) {
             logger.info(`user-watch from socket [id: ${socket.id}], on user ${userId}`)
             socket.join('watching:' + userId)
 
+        })
+        socket.on('on-user-mouse-down', pos => {
+            socket.broadcast.to(socket.myTopic).emit('recive-user-click', pos)
+        })
+        socket.on('on-user-mouse-move', pos => {
+            socket.broadcast.to(socket.myTopic).emit('recive-user-mouse-move', pos)
+        })
+        socket.on('on-user-mouse-up', (clientX) => {
+            socket.broadcast.to(socket.myTopic).emit('recive-user-mouse-up', clientX)
+        })
+        socket.on('user-dragging-task', ({ el, pos }) => {
+            console.log(el);
+            console.log(pos);
+            socket.broadcast.to(socket.myTopic).emit('recive-user-task-el', { el, pos })
         })
         socket.on('set-user-socket', userId => {
             logger.info(`Setting socket.userId = ${userId} for socket [id: ${socket.id}]`)
